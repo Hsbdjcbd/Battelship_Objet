@@ -8,5 +8,9 @@ int main() {
 	/* UNE FOIS QUE VOTRE JEU DE BATTLESHIP EST COMPLÉTÉ. */
 	/******************************************************/
 
+
+	Game game;
+	game.play(cout);
+
 	return 0;
 }
