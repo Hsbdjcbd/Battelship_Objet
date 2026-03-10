@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <iostream>
 
-
+ 
 Point::Point() {
     _x = 0;
     _y = 0;
@@ -12,7 +12,7 @@ Point::Point() {
 
 Point::Point(int x, int y) {
     _x = x;
-    _y = y;
+    _y = y; 
     _color = 7;
 }
 
@@ -48,7 +48,7 @@ Point Point::getPoint() const {
 
 
 void Point::setX(const int x) {
-    assert(x >= 0)
+    assert(x >= 0);
     _x = x;
 }
 
@@ -123,10 +123,10 @@ void Point::read(std::istream& input){
     char trash;
 
     input >> trash  // (
-        >> _x
-        >> trash   // ,
-        >> _y
-        >> trash   // )
-        >> _color;
+          >> _x
+          >> trash   // ,
+          >> _y
+          >> trash   // )
+          >> _color;
 }
 

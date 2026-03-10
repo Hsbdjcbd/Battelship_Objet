@@ -11,7 +11,7 @@ public:
     Point();                     // constructeur par défaut sert a quasiment fuckall
     Point(int x, int y);         // constructeur avec paramètres
     Point(const Point& p);       // constructeur de copie
-    //~Point();                    // destructeur sert a fuckall
+    ~Point();                    // destructeur
 
     int getX() const;
     int getY() const;
@@ -28,6 +28,8 @@ public:
     void draw(std::ostream& output) const;
     void print(std::ostream& output) const;  // affiche (x,y) color
     void read(std::istream& input);
+
+
 
 };
 
