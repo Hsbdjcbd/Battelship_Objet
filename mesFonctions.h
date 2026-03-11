@@ -1,3 +1,11 @@
+/*====================================
+AUTEUR : Prof. Techniques de l'informatique
+PROJET : General - inclut dans Jeu de Battleship
+NOM DU FICHIER : mesFonctions.h
+DATE : 2026-03-11
+BASEE SUR : TP1 Programmation Oriente Objet
+DESCRIPTION : fonctions pour consoles multi-plateformes
+====================================*/
 #pragma once
 
 #include <iostream>

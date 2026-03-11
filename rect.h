@@ -1,35 +1,101 @@
+/*====================================
+AUTEUR : Stanislas Royal
+PROJET : General - inclut dans Jeu de Battleship
+NOM DU FICHIER : rect.h
+DATE : 2026-03-11
+DESCRIPTION : Classe Objet Rect:: , Sert a contenir
+des coordonnes et dimensions d'un rectangle et aisee les operations.
+====================================*/
 #pragma once
-#include "point.h"
+
+#include <assert.h>
+#include <Windows.h>
 #include <iostream>
-#include <cassert>
+
+#include "point.h"
+
+
 
 class Rect {
 private:
-    Point _coord;   // coordonnées du point supérieur gauche du rectangle
-    int _w;         // largeur
-    int _h;         // hauteur
+	Point _coord;	//coordonnï¿½es du point supï¿½rieur gauche du rectangle
+	int _w;			//largeur
+	int _h;			//hauteur
+
+
 
 public:
-    // Constructeurs
-    Rect();                       // par défaut
-    Rect(int x, int y, int w, int h); // avec paramètres
-    Rect(const Point& coord, int w, int h); // avec Point
+	// Nous allons crï¿½er un constructeur sans paramï¿½tre, un constructeur avec une coordonnï¿½e et les dimensions du rectangle en
+	//		paramï¿½tre, qui peut avoir une valeur par dï¿½faut ï¿½ 0.
 
-    // Getters
-    int getX() const;
-    int getY() const;
-    int getWidth() const;
-    int getHeight() const;
-    const Point& getCoord() const;
+	Rect();
+	/* Le constructeur sans paramï¿½tre nï¿½a quï¿½ï¿½ initialiser la largeur et la hauteur ï¿½ 0, car le point est construit automatiquement ï¿½ 0
+grï¿½ce au constructeur sans paramï¿½tre crï¿½ï¿½ dans la classe Point. */
+// Rect(Point p, int hauteur, int largeur);
+	Rect(int x, int y, int w = 0, int h = 0);
+	Rect(const Rect& r);
+	~Rect(); // desctructeur pour reinitialiser memoire a ZERO
 
-    // Setters
-    void setX(int x);
-    void setY(int y);
-    void setWidth(int w);
-    void setHeight(int h);
-    void setCoord(const Point& coord);
 
-    // Méthodes
-    bool contains(const Point& p) const;  // Vérifie si un point est à l’intérieur du rectangle
-    void print(std::ostream& output) const;
+
+	// getteurs
+
+	int getWidth() const;
+	int getHeight() const;
+
+
+
+	const Point& getPosition() const;
+	Point& getPosition();
+	Point& getPoint();
+
+
+	/// Setteurs
+
+
+	/// setWidth, setHeight, setSize, setRectangle. Pour la
+/// 	mï¿½thode setRectangle, faites passer les 4 paramï¿½tres soit x et y pour le point ainsi que la largeur et la hauteur.
+
+	void setWidth(int w);
+	void setHeight(int h);
+	void setSize(int w, int h);
+	void setRectangle(int x, int y, int w = 0, int h = 0);
+
+
+	// operator
+
+	Rect& operator=(const Rect& r2);
+
+	bool operator==(const Rect& r2) const;
+	bool operator!=(const Rect& r2) const;
+	bool operator>(const Rect& r2) const;
+	bool operator<(const Rect& r2) const;
+
+
+	bool operator>=(const Rect& r2) const;
+	bool operator<=(const Rect& r2) const;
+
+
+
+
+
+	// Methodes autres
+
+	// Pour la mï¿½thode read, faites un appel ï¿½ la mï¿½thodes read de la classe Point. En ce qui concerne la mï¿½thode draw, vous
+	//		aurez probablement besoin de la coder ï¿½ lï¿½aide de boucles sans nï¿½cessairement faire appel ï¿½ la mï¿½thode draw du Point.
+
+	void draw(std::ostream& output) const;
+
+	void print(std::ostream& output) const;		// (x,y) color h X w
+
+	void read(std::istream& input);				// (x,y) color h X w
+
+
+	int surface() const;
+
+	int perimetre()const;
+
 };
+
+std::ostream& operator<<(std::ostream& os, const Rect& r1);
+std::istream& operator>>(std::istream& is, Rect& r1);

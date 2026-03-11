@@ -1,3 +1,11 @@
+/*====================================
+AUTEUR : Prof. Techniques de l'informatique
+PROJET : General - inclut dans Jeu de Battleship
+NOM DU FICHIER : mesConstantes.h
+DATE : 2026-03-11
+BASEE SUR : TP1 Programmation Oriente Objet
+DESCRIPTION : Constantes et enum pour parametres Statique
+====================================*/
 #pragma once
 
 #include <string>
@@ -8,8 +16,9 @@
 /********************************/
 
 // Constantes pour les bateaux (objet "Ship")
-constexpr int SHIP_MAX_NB =	5;
+constexpr int SHIP_MAX_NB = 5;
 constexpr int SHIP_MAX_LENGTH = 15;
+
 constexpr int SHIP_HIDDEN_COLOR = 0;
 constexpr int SHIP_HIT_COLOR = 13;
 constexpr int SHIP_SUNK_COLOR = 12;
@@ -27,4 +36,5 @@ constexpr int GRID_SHIPS_STATUS_Y = (GRID_INNER_MIN_Y - 1);
 constexpr int GRID_MISSED_HITS_COLOR = 11;
 
 // Constantes pour le déroulement de la partie (objet "Game")
+
 constexpr int GAME_NB_PLAYERS = 2;
