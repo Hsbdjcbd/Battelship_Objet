@@ -222,7 +222,7 @@ bool Point::compareColor(const Point& p2) const
 void Point::draw(std::ostream& output) const
 {
 
-	assert(_color >= 0);
+	//assert(_color >= 0);
 	assert(_x >= 0);
 	assert(_y >= 0);
 

@@ -1,4 +1,4 @@
-/*====================================
+﻿/*====================================
 AUTEUR : Stanislas Royal
 PROJET : General - inclut dans Jeu de Battleship
 NOM DU FICHIER : rect.h

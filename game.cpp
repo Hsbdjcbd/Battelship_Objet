@@ -22,6 +22,7 @@ Game::Game() {
 	// Nouveau seed for random
 
 	srand(time(NULL));
+	
 }
 Game::~Game()
 {
@@ -49,12 +50,12 @@ void Game::play(std::ostream& sortie)
 //        while (!_grids[_currentPlayerIndex].placeHit(getMouseClick()));
 
 		draw(std::cout);
-		sleepMs(500);
+		//sleepMs(500);
 		ignoreMouseClicks();
 
 		if (_grids[_currentPlayerIndex].getNbRemainingShips())
 		{
-			_currentPlayerIndex++;
+			//_currentPlayerIndex++;
 			_currentPlayerIndex = _currentPlayerIndex % GAME_NB_PLAYERS; // TODO: Test Modulo
 		}
 		else
@@ -81,8 +82,9 @@ void Game::draw(std::ostream& output) const
 
 	clearScreen(output);
 
-	if (_gameOver)
+	if (_gameOver){
 		output << "Joueur " << _currentPlayerIndex + 1 << " WON!" << std::endl;
+	}
 	else
 	{
 		output << "JEU DE BATTLESHIP : cliquez dans la grille pour tirer" << std::endl;

@@ -19,8 +19,8 @@ using namespace std;
 /***********************************************/
 bool Grid::placeShips() {
 	bool collides;
-	int maxX, maxY;
 
+	int maxX, maxY;
 	for (int i = 0; i < _nbShips; i++) {
 		do {
 			if ((_ships[i].getLength() > (GRID_WIDTH - 2)) ||
@@ -218,10 +218,10 @@ l’endroit est valide. Servez-vous de la méthode « placeHit() » de la clas
 		case 0: // SHIP_NOT_HIT
 			continue;
 		case 1: // SHIP_HIT // first hit on this point of ship
-			return true;
 		case 2: // SHIP_SUNK // ship already sunk
+		return false;
 		case 3: // SHIP_HIT_TWICE // touche a meme place
-			return false;
+			return true;
 		default:
 			return false; // ERREUR SHOULD NOT GET HERE !!!!
 		}

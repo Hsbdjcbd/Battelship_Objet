@@ -1,11 +1,3 @@
-/*====================================
-AUTEUR : Prof. Techniques de l'informatique
-PROJET : General - inclut dans Jeu de Battleship
-NOM DU FICHIER : mesFonctions.cpp
-DATE : 2026-03-11
-BASEE SUR : TP1 Programmation Oriente Objet
-DESCRIPTION : fonctions pour consoles multi-plateformes
-====================================*/
 #include <cassert>
 #include "mesConstantes.h"
 #include "mesFonctions.h"

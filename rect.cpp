@@ -24,7 +24,7 @@ Rect::Rect(const Rect& r)
 
 Rect::Rect(int x, int y, int w, int h) {
 
-	//  Attention, un rectangle ne peut pas avoir de coordonn�es ou de dimensions n�gatives, sinon on g�n�rera une exception.
+	//  Attention, un rectangle ne peut pas avoir de coordonn?es ou de dimensions n?gatives, sinon on g?n?rera une exception.
 /*	assert(x >= 0);
 	assert(y >= 0);
 	assert(w >= 0);
@@ -36,9 +36,9 @@ Rect::Rect(int x, int y, int w, int h) {
 	/*
 	_coord.setPosition(x, y);
 	_w = w;
-	//si ce constructeur est appel� avec seulement 2 int
+	//si ce constructeur est appel? avec seulement 2 int
 	_h = h;
-	//les 2 autres seront initialis�s � 0
+	//les 2 autres seront initialis?s ? 0
 
 	*/
 }
@@ -164,7 +164,7 @@ void Rect::draw(std::ostream& output) const
 
 void Rect::read(std::istream& input) {
 
-	// fait la lecture d�une seule ligne du fichier (le stream re�u en param�tre) en pla�ant directement les coordonn�es et couleurs dans les propri�t�s
+	// fait la lecture d?une seule ligne du fichier (le stream re?u en param?tre) en pla?ant directement les coordonn?es et couleurs dans les propri?t?s
 	// FIXME: Not finished
 	std::string strF;
 	std::stringstream ss;
@@ -219,13 +219,13 @@ void Rect::read(std::istream& input) {
 
 std::ostream& operator<<(std::ostream& os, const Rect& r1)
 { // Added in Lab3
-	//fonction operator<< qui appelle la m�thode print
+	//fonction operator<< qui appelle la m?thode print
 	r1.print(os);
 	return os;
 }
 std::istream& operator>>(std::istream& is, Rect& r1)
 { // Added in Lab3
-	//fonction operator>> qui appelle la m�thode read
+	//fonction operator>> qui appelle la m?thode read
 	r1.read(is);
 	return is;
 }
@@ -240,7 +240,7 @@ Rect& Rect::operator=(const Rect& r2)
 }
 
 bool Rect::operator==(const Rect& r2) const
-{ // l�operator== qui compare les dimensions des rectangles
+{ // l?operator== qui compare les dimensions des rectangles
 	/// TODO: ??? DIMENSIONS ???
 
 
@@ -257,13 +257,13 @@ bool Rect::operator!=(const Rect& r2) const
 
 
 bool Rect::operator>(const Rect& r2) const
-{ //surcharge de l�operator> qui compare la taille (aire ou p�rim�tre) des rectangles
+{ //surcharge de l?operator> qui compare la taille (aire ou p?rim?tre) des rectangles
 	return ((this->perimetre()) > (r2.perimetre()));
 
 	//	return ((this->surface()) > (r2.surface()));
 }
 bool Rect::operator<(const Rect& r2) const
-{ //surcharge de l�operator< qui compare la taille (aire ou p�rim�tre) des rectangles
+{ //surcharge de l?operator< qui compare la taille (aire ou p?rim?tre) des rectangles
 
 
 	return ((this->perimetre()) < (r2.perimetre()));
@@ -285,9 +285,9 @@ bool Rect::operator<=(const Rect& r2) const
 /*
 
 getWidth, getHeight, et getPosition.Vous devrez coder deux
-versions de cette derni�re m�thode : une version qui retournera une r�f�rence non constante vers le point _coord et une autre
-version qui retournera une r�f�rence constante vers ce point :
-� Version non const : Point & getPosition();
-� Version const : const Point& getPosition() const; */
+versions de cette derni?re m?thode : une version qui retournera une r?f?rence non constante vers le point _coord et une autre
+version qui retournera une r?f?rence constante vers ce point :
+? Version non const : Point & getPosition();
+? Version const : const Point& getPosition() const; */
 
 
