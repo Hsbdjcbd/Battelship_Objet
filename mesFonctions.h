@@ -19,3 +19,9 @@ void sleepMs(int ms);
 Point getMouseClick();
 void ignoreMouseClicks();
 void clearScreen(std::ostream& output);
+
+void debugMessage(std::string str, bool terminale, int exitcode);
+
+void criticMessage(std::string str, int exitcode);
+
+void conPause(bool bDisplaymessage, int timeout);

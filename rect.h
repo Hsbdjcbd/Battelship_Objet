@@ -29,13 +29,13 @@ public:
 	//		param�tre, qui peut avoir une valeur par d�faut � 0.
 
 	Rect();
-	/* Le constructeur sans param�tre n�a qu�� initialiser la largeur et la hauteur � 0, car le point est construit automatiquement � 0
-gr�ce au constructeur sans param�tre cr�� dans la classe Point. */
-// Rect(Point p, int hauteur, int largeur);
-	Rect(int x, int y, int w = 0, int h = 0);
-	Rect(const Rect& r);
-	~Rect(); // desctructeur pour reinitialiser memoire a ZERO
+	// NOTE: Rect(Point p, int hauteur, int largeur);
 
+	Rect(int x, int y, int w = 0, int h = 0);
+
+	Rect(const Rect& r);
+
+	~Rect(); // destructeur pour reinitialiser memoire a ZERO
 
 
 	// getteurs
@@ -52,15 +52,12 @@ gr�ce au constructeur sans param�tre cr�� dans la classe Point. */
 
 	/// Setteurs
 
-
-	/// setWidth, setHeight, setSize, setRectangle. Pour la
-/// 	m�thode setRectangle, faites passer les 4 param�tres soit x et y pour le point ainsi que la largeur et la hauteur.
-
 	void setWidth(int w);
 	void setHeight(int h);
 	void setSize(int w, int h);
 	void setRectangle(int x, int y, int w = 0, int h = 0);
 
+	// NOTE: void setPosition(int x, int y) { _coord.setPosition(x,y); }
 
 	// operator
 
@@ -71,24 +68,19 @@ gr�ce au constructeur sans param�tre cr�� dans la classe Point. */
 	bool operator>(const Rect& r2) const;
 	bool operator<(const Rect& r2) const;
 
-
 	bool operator>=(const Rect& r2) const;
 	bool operator<=(const Rect& r2) const;
 
 
-
-
-
 	// Methodes autres
-
-	// Pour la m�thode read, faites un appel � la m�thodes read de la classe Point. En ce qui concerne la m�thode draw, vous
-	//		aurez probablement besoin de la coder � l�aide de boucles sans n�cessairement faire appel � la m�thode draw du Point.
 
 	void draw(std::ostream& output) const;
 
-	void print(std::ostream& output) const;		// (x,y) color h X w
+	// NOTE: serialize format ?? : (x,y) color h X w    instead of (x,y) h X w
 
-	void read(std::istream& input);				// (x,y) color h X w
+	void print(std::ostream& output) const;
+
+	void read(std::istream& input);
 
 
 	int surface() const;

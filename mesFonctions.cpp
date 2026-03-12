@@ -1,5 +1,5 @@
 /*====================================
-AUTEUR : Prof. Techniques de l'informatique
+AUTEUR : Prof. Techniques de l'informatique et Stanislas Royal
 PROJET : General - inclut dans Jeu de Battleship
 NOM DU FICHIER : mesFonctions.cpp
 DATE : 2026-03-11
@@ -159,4 +159,36 @@ void ignoreMouseClicks() {
 // éviter des problèmes avec la fonction getMouseClick.
 void clearScreen(std::ostream& output) {
 	output << "\033[2J\033[1;1H";
+}
+
+
+void debugMessage(std::string str, bool terminale, int exitcode)
+{
+	std::cerr << std::endl << std::endl << "ERREUR: " << str << std::endl << std::endl;
+
+	conPause(true, -1);
+
+	if (terminale)
+		exit(exitcode);
+}
+
+void criticMessage(std::string str, int exitcode)
+{
+	debugMessage(str, true, exitcode);
+}
+
+inline void conPause(bool bDisplaymessage = false, int timeout = -1)
+{
+
+	std::string sMessage("Appuyer sur une touche pour continuer...");
+
+	if (bDisplaymessage)
+		cout << sMessage << endl;
+
+	// TODO: Use _getch() instead of system()
+#if defined(__linux__)
+	system("pause>/dev/null");
+#elif _WIN32
+	system("pause>NUL");
+#endif
 }

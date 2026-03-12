@@ -16,6 +16,7 @@ bateaux de un joueur et les coups manques
 #include <sstream>
 // ^^ Added by STAN
 #include "mesConstantes.h"
+#include "mesFonctions.h"
 #include "point.h"
 #include "rect.h" // Ajoutez vos fichiers "rect.h" et "rect.cpp" développés dans un laboratoire précédent
 #include "ship.h"

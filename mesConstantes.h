@@ -38,3 +38,26 @@ constexpr int GRID_MISSED_HITS_COLOR = 11;
 // Constantes pour le déroulement de la partie (objet "Game")
 
 constexpr int GAME_NB_PLAYERS = 2;
+
+
+#define DEBUG_CODE 1
+#undef DEBUG_CODE
+
+//#define DEBUG_NO_READ_FILE
+//#define DEBUG_NO_PLAYER_TURN
+//#define DEBUG_INFINITE_GAME
+
+
+#ifdef DEBUG_CODE
+constexpr int PLAYER_TURN_SLEEP_MS = 200; // default 500 ms
+#else
+constexpr int PLAYER_TURN_SLEEP_MS = 500; // default 500 ms
+#endif
+
+// Contrainte pour valeur de retour de Ship::placeHit()
+enum SHIP_HIT_TYPE {
+	SHIP_NOT_HIT = 0,
+	SHIP_ALREADY_SUNK = 1,
+	SHIP_HIT_TWICE = 2,
+	SHIP_HIT = 3
+};

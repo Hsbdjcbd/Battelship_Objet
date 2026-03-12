@@ -10,9 +10,6 @@ Grid de chaque joueur et gerer les tours de jeu.
 #pragma once
 
 #include <iostream>
-// Added by STAN
-#include <sstream>
-// ^^ Added by STAN
 #include "mesConstantes.h"
 #include "mesFonctions.h"
 #include "grid.h"

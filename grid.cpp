@@ -85,58 +85,42 @@ void Grid::printShipsStatus(ostream& output) const {
 /******************************************************/
 
 
-
-/*
-
-* Testez une par une toutes les méthodes de la classe « Grid » pour vous assurer qu’elles fonctionnent bien.
-
-Conservez vos tests (dans le fichier des jeux d’essais qui vous a été fourni avec le TP1), car vous devrez les décrire et les remettre dans le cadre de ce travail pratique.
-*
-*
-*/
-
-
 bool Grid::initShips()
 {
+	// should never be called twice
+	assert(_nbShips == 0);
 
-	// TODO: Read file, and call ship.read() ??
-
-	/*
-
-	Cette méthode sert à importer les différents bateaux qui se retrouveront dans la grille de jeu pour disputer une partie de Battleship.
-	L’importation des bateaux doit se faire à partir du fichier (voir l’exemple de fichier ci-dessus) dont le nom est enregistré dans la constant « GRID_SHIPS_FILENAME ».
-	Dans la méthode « initShips() », vous devez donc ouvrir le fichier, procéder à sa lecture au moyen de la méthode « read() » de la grille, puis fermer ce fichier.
-
-	Si l’ouverture/la lecture du fichier s’est bien déroulée, il faut ensuite procéder au placement des bateaux dans la grille de jeu en appelant la méthode « placeShips() » (méthode déjà fournie).
-
-	Si le placement réussit (valeur « true » retournée), vous devez cacher les bateaux dans la grille de jeu via la méthode « hideShips() » (méthode que vous coderez ci-après).
-
-	Si le placement échoue (valeur « false » retournée), assurez-vous de faire planter le programme, car le jeu de Battleship ne peut pas s’amorcer sans que les bateaux n’aient été tous placés.
-
-	*/
-
-	std::fstream fichier;
-
-	//FIXME: ouvrirFichier(fichier, GRID_SHIPS_FILENAME);
+#ifdef DEBUG_NO_READ_FILE
 	stringstream ss1("Porte-avion (5)\nCroiseur (4)\nContre-torpilleur (3)\nSous-marin (3)\nTorpilleur (2)");
 	this->read(ss1);
-	assert(placeShips());
+#else
+	std::fstream fichier(GRID_SHIPS_FILENAME, ios::in);
+
+	if (!fichier.is_open())
+		criticMessage("ouverture de " + GRID_SHIPS_FILENAME, 1);
+
+
+	this->read(fichier);
+
+	fichier.close();
+#endif
+
+	if (_nbShips == 0)
+		criticMessage("lecture des navires echoues _nbShips == 0", 2);
+
+	if (!placeShips())
+		criticMessage("placement des bateaux impossibles!!", 3);
+
+	this->hideShips();
 
 	return true;
-	/*
-		this->read(fichier);
-
-		fichier.close();
-		return true;
-	*/
-	if (1 == 0) { // FIXME: error reading
-		return false;
-	}
-
 }
 
 void Grid::hideShips()
 {
+	// ne doit etre appeler qu'apres avoir charger les bateaux
+	assert(_nbShips > 0);
+
 	for (int i = 0; i < _nbShips; i++)
 		_ships[i].hide();
 }
@@ -148,17 +132,12 @@ Grid::Grid()
 
 	_gridOutline.getPosition().setPosition((GRID_INNER_MIN_X - 1), (GRID_INNER_MIN_Y - 1));
 	_gridOutline.setSize(GRID_WIDTH, GRID_HEIGHT);
-	_gridOutline.getPoint().setDrawingChar('+');
+	_gridOutline.getPoint().setDrawingChar('\xB0');
 
 	if (!initShips())
-	{
-		std::cerr << "Erreur position de bateaux!" << std::endl;
-		system("PAUSE");
-		exit(1);
-
+	{ // Ne devrait pas arriver ici puisque criticMessage() dans initShips() ...
+		criticMessage("impossible de positionner les bateaux!!", 4);
 	}
-
-
 }
 
 Grid::~Grid()
@@ -170,19 +149,14 @@ Grid::~Grid()
 int Grid::getNbRemainingShips() const
 {
 	assert(_nbShips > 0); // Should always be above zero when Called
+
 	int nb = _nbShips;
-	// TODO: Try me !
+
 	for (int i = 0; i < _nbShips; i++)
 		if (_ships[i].getSunkStatus())
 			nb--;
 
 	return nb;
-	/* OLD STAN
-	int nb = 0;
-	// TODO: Try me !
-	for (int i = 0; i < _nbShips; i++)
-		nb += _ships[i].getSunkStatus();
-	*/
 }
 
 bool Grid::placeHit(const Point& hitPosition)
@@ -190,46 +164,30 @@ bool Grid::placeHit(const Point& hitPosition)
 	int x = hitPosition.getX();
 	int y = hitPosition.getY();
 
-	// Outside Game GRID : TODO: Test me!
 	if ((x < GRID_INNER_MIN_X || x > GRID_INNER_MAX_X) ||
 		(y < GRID_INNER_MIN_Y || y > GRID_INNER_MAX_Y))
 		return false;
 
-	// TODO: Does compare check color and if so ...
-	//	if (_missedHits[i] == hitPosition)
 	for (int i = 0; i < _nbMissedHits; i++)
 		if (_missedHits[i].comparePosition(hitPosition))
 			return false;
-
-
-	// TODO: Check ... and create check for ships.Somethgin
-/* FIXME:
-Si le point « hitPosition » tombe sur un bateau déjà coulé ou encore sur un point déjà touché d’un des bateaux,
-l’endroit est invalide.
-
-Par contre, si le point « hitPosition » tombe sur un point encore intouché d’un des bateaux,
-l’endroit est valide. Servez-vous de la méthode « placeHit() » de la classe « Ship » pour vérifier ces cas.
-*/
 
 	for (int i = 0; i < _nbShips; i++)
 	{
 		switch (_ships[i].placeHit(hitPosition))
 		{
-		case 0: // SHIP_NOT_HIT
+		case SHIP_NOT_HIT: // SHIP_NOT_HIT=0
 			continue;
-		case 1: // SHIP_HIT // first hit on this point of ship
-			return true;
-		case 2: // SHIP_SUNK // ship already sunk
-		case 3: // SHIP_HIT_TWICE // touche a meme place
+		case SHIP_ALREADY_SUNK: // SHIP_ALREADY_SUNK=1 // ship already sunk
+		case SHIP_HIT_TWICE: // SHIP_HIT_TWICE=2 // touche a meme place
 			return false;
-		default:
-			return false; // ERREUR SHOULD NOT GET HERE !!!!
+		case SHIP_HIT: // SHIP_HIT=3 // first hit on this point of ship
+			return true;
 		}
 	}
 
-	// Le TIR est Valide : n'a pas toucher une case deja tirer, ni retirer a une place précédente
+	// Le TIR est Valide : n'a pas toucher une case deja tirer, ni toucher de bateau
 
-	// TODO: TRY ME!!!
 	_missedHits[_nbMissedHits] = hitPosition;
 	_missedHits[_nbMissedHits].setColor(GRID_MISSED_HITS_COLOR);
 	_nbMissedHits++;
@@ -239,46 +197,30 @@ l’endroit est valide. Servez-vous de la méthode « placeHit() » de la clas
 
 void Grid::draw(std::ostream& output) const
 {
-	/*
-	Vous devez afficher le contour de la grille, les bateaux (même s’ils sont cachés : il finiront par apparaître progressivement au fur
-	et à mesure qu’ils seront touchés) et les tirs manqués.
-	*/
-
 	assert(_nbShips > 0); // Should always be above 0 if class initialized right.
 
-	/* FIXME: Why is this not working [const object function]... */
-	/*
-	Point& pt = _gridOutline.getPosition();
-	pt.setDrawingChar('*');
-	*/
+	// only print something if in console : otherwise maybe print();
+	if (&output == &std::cout)
+	{
+		_gridOutline.draw(output);
+
+		for (int i = 0; i < _nbShips; i++)
+			_ships[i].draw(output);
 
 
-	_gridOutline.draw(output);
-
-	for (int i = 0; i < _nbShips; i++)
-		_ships[i].draw(output);
-
-
-	for (int i = 0; i < _nbMissedHits; i++)
-		_missedHits[i].draw(output);
-
-
+		for (int i = 0; i < _nbMissedHits; i++)
+			_missedHits[i].draw(output);
+	}
 }
 
 void Grid::read(std::istream& input)
 {
-	/*
-
-	Vous devez utiliser la méthode « read() » de la classe « Ship » pour enregistrer les noms et les longueurs de
-	chaque bateau du tableau « _ships[] » à la manière d’une lecture dans un fichier (le paramètre d’entrée « input »
-	pourrait en effet représenter un fichier). Vous devez donc vous assurer d’arrêter la lecture si vous arrivez à la
-	 fin du fichier ou si le nombre de bateaux atteint/dépasse la constante « SHIP_MAX_NB ».
-	 N’oubliez pas d’ajuster la valeur de la propriété « _nbShips » selon le nombre de bateaux lus.
-	  Voici un exemple de fichier qui pourrait être lu avec la méthode « read() » de la grille pour
-	  importer les bateaux dans la grille de jeu :
-
-	*/
-
+#ifdef DEBUG_CODE
+	// INFO: Ajouter _nbShips = 0; pour permettre de recharger de nouveau Ships avec read()
+	_nbShips = 0;
+	// seulement pour test puisque la plupart des actions sont dans le constructeur ...
+	// et que les variables ne sont plus au valeur initial ...
+#endif
 	while (!input.eof())
 	{
 		std::string ligne;
@@ -287,28 +229,37 @@ void Grid::read(std::istream& input)
 
 		if (_nbShips < SHIP_MAX_NB && ligne != "")
 		{
-			_ships[_nbShips].read(ssl);
-			_nbShips++;
+			// REF: https://en.cppreference.com/w/cpp/string/basic_string.html
+			// Verifier si Format : "String (Int)"  est Respecter de facon basique ...
+
+			// Verification
+			//		1 - String end with ')'
+			//		2 - String contains '(' /* inutile : and ')' */
+			//		3 - Premier et dernier '(' et ')' sont au meme position, donc 1 seul chaque
+
+			if (ligne.back() == ')' &&
+				ligne.find('(') != std::string::npos
+				/* Inutile :  && ligne.find(')') != std::string::npos */)
+
+				if ((ligne.find('(') == ligne.rfind('(')) &&
+					(ligne.find(')') == ligne.rfind(')')))
+				{
+					_ships[_nbShips].read(ssl);
+					_nbShips++;
+				}
 		}
-
 	}
-
 }
 
 std::ostream& operator<<(std::ostream& output, const Grid& grid)
 {
-	/*
-		Vous devez appeler la méthode « draw() » à partir de la grille reçue en paramètre d’entrée.
-		*/
 	grid.draw(output);
+
 	return output;
 }
 
 std::istream& operator>>(std::istream& input, Grid& grid)
 {
-	/*
-	Vous devez appeler la méthode « read() » à partir de la grille reçue en paramètre d’entrée.
-	*/
 	grid.read(input);
 
 	return input;

@@ -47,7 +47,8 @@ public:
 	void rotate();
 	void hide();
 	bool checkCollision(const Ship& otherShip) const;
-	int placeHit(const Point& hitPosition);
+	// modified int to SHIP_HIT_TYPE to constrained return value
+	SHIP_HIT_TYPE placeHit(const Point& hitPosition);
 	void print(std::ostream& output) const;
 	void draw(std::ostream& output) const;
 	void read(std::istream& input);
